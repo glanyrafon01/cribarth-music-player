@@ -1,6 +1,6 @@
 {
     "name": "cribarth-music-player",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "description": "Electron wrapper for Music Assistant's 'This Device' player.",
     "main": "main.js",
     "scripts": {
@@ -20,6 +20,7 @@
     "build": {
       "appId": "com.cribarth.musicplayer",
       "productName": "Cribarth Music Player",
+      "icon": "build/icon.png",
       "files": [
         "main.js",
         "preload.js",
@@ -29,13 +30,14 @@
         "target": ["deb"],
         "category": "AudioVideo",
         "executableName": "cribarth-music-player",
+        "icon": "build/icon.png",        
         "maintainer": "Justin Horrell <justindhorrell@cribarth.cymru>",
         "desktop": {
           "Name": "Cribarth Music Player",
           "Comment": "A lightweight Welsh music player",
           "Terminal": false,
           "Type": "Application",
-          "Icon": "build/icon.png"
+          "Icon": "cribarth-music-player"
         }
       }
     }
