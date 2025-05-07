@@ -47,6 +47,10 @@ npm run package
 
 See [docs/RELEASING.md](docs/RELEASING.md) for the versioning and tagging workflow.
 
+## 📦 Releases
+
+See [RELEASE.md](./RELEASE.md) for the changelog and version history.
+
 ## License
 
 MIT © Justin Horrell, Cribarth Consulting
