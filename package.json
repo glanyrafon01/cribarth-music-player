@@ -1,44 +1,53 @@
 {
-    "name": "cribarth-music-player",
-    "version": "1.0.9",
-    "description": "Electron wrapper for Music Assistant's 'This Device' player.",
-    "main": "main.js",
-    "scripts": {
-      "start": "electron .",
-      "package": "electron-builder --linux deb"
-    },
-    "author": {
-      "name": "Justin Horrell Cribarth Consulting",
-      "email": "justindhorrell@cribath.cymru"
-    },
-    "homepage": "https://github.com/glanyrafon01/cribarth-music-player",
-    "license": "MIT",
-    "devDependencies": {
-      "electron": "^29.0.0",
-      "electron-builder": "^24.6.0"
-    },
-    "build": {
-      "appId": "cymru.cribarth.musicplayer",
-      "productName": "Cribarth-Music-Player",
+  "name": "cribarth-music-player",
+  "version": "1.0.11",
+  "description": "Electron wrapper for Music Assistant's 'This Device' player.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist:linux": "electron-builder --linux deb",
+    "dist:win": "electron-builder --win"
+  },
+  "author": {
+    "name": "Justin Horrell Cribarth Consulting",
+    "email": "justindhorrell@cribarth.cymru"
+  },
+  "homepage": "https://github.com/glanyrafon01/cribarth-music-player",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^29.0.0",
+    "electron-builder": "^24.6.0"
+  },
+  "build": {
+    "appId": "cymru.cribarth.musicplayer",
+    "productName": "Cribarth-Music-Player",
+    "icon": "build/icons",
+    "files": [
+      "main.js",
+      "preload.js",
+      "package.json"
+    ],
+    "linux": {
+      "target": ["deb"],
+      "category": "AudioVideo",
+      "executableName": "cribarth-music-player",
       "icon": "build/icons",
-      "files": [
-        "main.js",
-        "preload.js",
-        "package.json"
-      ],
-      "linux": {
-        "target": ["deb"],
-        "category": "AudioVideo",
-        "executableName": "cribarth-music-player",
-        "icon": "build/icons",        
-        "maintainer": "Justin Horrell <justindhorrell@cribarth.cymru>",
-        "desktop": {
-          "Name": "Cribarth Music Player",
-          "Comment": "A lightweight Welsh music player",
-          "Terminal": false,
-          "Type": "Application",
-          "Icon": "cribarth-music-player"
-        }
+      "maintainer": "Justin Horrell <justindhorrell@cribarth.cymru>",
+      "desktop": {
+        "Name": "Cribarth Music Player",
+        "Comment": "A lightweight Welsh music player",
+        "Terminal": false,
+        "Type": "Application",
+        "Icon": "cribarth-music-player"
       }
+    },
+    "win": {
+      "target": ["nsis"],
+      "icon": "build/icons/icon.ico"
+    },
+    "publish": {
+      "provider": "github",
+      "releaseType": "release"
     }
+  }
 }
