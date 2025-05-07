@@ -1,6 +1,6 @@
 {
   "name": "cribarth-music-player",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "Electron wrapper for Music Assistant's 'This Device' player.",
   "main": "main.js",
   "scripts": {
