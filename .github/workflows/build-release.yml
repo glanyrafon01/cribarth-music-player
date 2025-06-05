@@ -31,7 +31,7 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/v')
         run: npx electron-builder --linux deb --publish always --config.extraMetadata.version=${{ github.ref_name }}
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN2 }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
   build-windows:
     name: Build .exe for Windows
@@ -56,4 +56,4 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/v')
         run: npx electron-builder --win --publish always --config.extraMetadata.version=${{ github.ref_name }}
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN2 }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
