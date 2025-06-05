@@ -25,7 +25,8 @@
     "files": [
       "main.js",
       "preload.js",
-      "package.json"
+      "package.json",
+      "first-run.html"
     ],
     "linux": {
       "target": ["deb"],

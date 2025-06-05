@@ -45,7 +45,7 @@ async function createWindow() {
     if (!url) {
       // Use absolute path for packaged app
       const firstRunPath = app.isPackaged
-        ? path.join(process.resourcesPath, 'app.asar.unpacked', 'first-run.html')
+        ? path.join(process.resourcesPath, 'app', 'first-run.html')
         : path.join(__dirname, 'first-run.html');
       win.loadFile(firstRunPath);
       // Listen for URL from renderer
