@@ -21,7 +21,7 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Build .deb installer
-        run: npx electron-builder --linux deb
+        run: npx electron-builder --linux deb --publish=never
       - name: Upload .deb artifact
         uses: actions/upload-artifact@v4
         with:
@@ -56,7 +56,7 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Build .exe installer
-        run: npx electron-builder --win
+        run: npx electron-builder --win --publish=never
       - name: Upload .exe artifact
         uses: actions/upload-artifact@v4
         with:
