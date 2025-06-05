@@ -41,11 +41,13 @@ async function createWindow() {
 
   let url = getMusicAssistantUrl();
   if (!url) {
-    // Try to get from environment for dev, else prompt
     url = process.env.MUSIC_ASSISTANT_URL;
     if (!url) {
-      // Fallback: load a local HTML page that prompts for URL
-      win.loadFile('first-run.html');
+      // Use absolute path for packaged app
+      const firstRunPath = app.isPackaged
+        ? path.join(process.resourcesPath, 'app', 'first-run.html')
+        : path.join(__dirname, 'first-run.html');
+      win.loadFile(firstRunPath);
       // Listen for URL from renderer
       ipcMain.once('set-music-assistant-url', (event, userUrl) => {
         if (userUrl && /^https?:\/\//.test(userUrl)) {
