@@ -11,61 +11,49 @@ jobs:
   build-linux:
     name: Build .deb for Linux
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-
       - name: Install dependencies
         run: npm install
-
       - name: Build .deb installer
         run: npx electron-builder --linux deb
-
       - name: Upload .deb artifact
         uses: actions/upload-artifact@v4
         with:
           name: cribarth-music-player-linux-deb
           path: dist/*.deb
-
       - name: Publish .deb to GitHub Release
         if: startsWith(github.ref, 'refs/tags/v')
-        run: npx electron-builder --linux deb --publish always
+        run: npx electron-builder --linux deb --publish always --config.extraMetadata.version=${{ github.ref_name }}
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
   build-windows:
     name: Build .exe for Windows
     runs-on: windows-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-
       - name: Install dependencies
         run: npm install
-
       - name: Build .exe installer
         run: npx electron-builder --win
-
       - name: Upload .exe artifact
         uses: actions/upload-artifact@v4
         with:
           name: cribarth-music-player-windows-exe
           path: dist/*.exe
-
       - name: Publish .exe to GitHub Release
         if: startsWith(github.ref, 'refs/tags/v')
-        run: npx electron-builder --win --publish always
+        run: npx electron-builder --win --publish always --config.extraMetadata.version=${{ github.ref_name }}
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
