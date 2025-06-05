@@ -27,6 +27,16 @@ jobs:
         with:
           name: cribarth-music-player-linux-deb
           path: dist/*.deb
+      - name: Check GH_TOKEN is set
+        run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "GH_TOKEN is empty"
+            exit 1
+          else
+            echo "GH_TOKEN is set"
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
       - name: Publish .deb to GitHub Release
         if: startsWith(github.ref, 'refs/tags/v')
         run: npx electron-builder --linux deb --publish always --config.extraMetadata.version=${{ github.ref_name }}
