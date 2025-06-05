@@ -28,10 +28,10 @@ jobs:
           name: cribarth-music-player-linux-deb
           path: dist/*.deb
       - name: Publish .deb to GitHub Release
-        if: startsWith(github.ref, 'refs/tags/v') && env.GH_TOKEN != ''
+        if: startsWith(github.ref, 'refs/tags/v') && env.GH_TOKEN2 != ''
         run: npx electron-builder --linux deb --publish always --config.extraMetadata.version=${{ github.ref_name }}
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN2 }}
 
   build-windows:
     name: Build .exe for Windows
@@ -53,7 +53,7 @@ jobs:
           name: cribarth-music-player-windows-exe
           path: dist/*.exe
       - name: Publish .exe to GitHub Release
-        if: startsWith(github.ref, 'refs/tags/v') && env.GH_TOKEN != ''
+        if: startsWith(github.ref, 'refs/tags/v') && env.GH_TOKEN2 != ''
         run: npx electron-builder --win --publish always --config.extraMetadata.version=${{ github.ref_name }}
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN2 }}
