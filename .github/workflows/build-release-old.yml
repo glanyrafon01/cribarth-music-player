@@ -14,27 +14,19 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-
       - name: Install dependencies
         run: npm install
-
-      - name: Extract clean version (no "v" prefix)
-        run: echo "VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_ENV
-
       - name: Build .deb installer
-        run: npx electron-builder --linux deb --publish=never --config.extraMetadata.version=$VERSION
-
+        run: npx electron-builder --linux deb --publish=never
       - name: Upload .deb artifact
         uses: actions/upload-artifact@v4
         with:
           name: cribarth-music-player-linux-deb
           path: dist/*.deb
-
       - name: Check GH_TOKEN is set
         run: |
           if [ -z "$GH_TOKEN" ]; then
@@ -45,10 +37,9 @@ jobs:
           fi
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-
       - name: Publish .deb to GitHub Release
         if: startsWith(github.ref, 'refs/tags/v')
-        run: npx electron-builder --linux deb --publish always --config.extraMetadata.version=$VERSION
+        run: npx electron-builder --linux deb --publish always --config.extraMetadata.version=${{ github.ref_name }}
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
@@ -58,29 +49,21 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-
       - name: Install dependencies
         run: npm install
-
-      - name: Extract clean version (no "v" prefix)
-        run: echo "VERSION=${env:GITHUB_REF_NAME#v}" >> $env:GITHUB_ENV
-
       - name: Build .exe installer
-        run: npx electron-builder --win --publish=never --config.extraMetadata.version=$env:VERSION
-
+        run: npx electron-builder --win --publish=never
       - name: Upload .exe artifact
         uses: actions/upload-artifact@v4
         with:
           name: cribarth-music-player-windows-exe
           path: dist/*.exe
-
       - name: Publish .exe to GitHub Release
         if: startsWith(github.ref, 'refs/tags/v')
-        run: npx electron-builder --win --publish always --config.extraMetadata.version=$env:VERSION
+        run: npx electron-builder --win --publish always --config.extraMetadata.version=${{ github.ref_name }}
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
