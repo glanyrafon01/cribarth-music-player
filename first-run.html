@@ -24,7 +24,7 @@
     </form>
   </div>
   <script>
-    const { ipcRenderer } = require('electron');
+    // Use window.electronAPI if contextBridge is set up, else fallback to postMessage
     const form = document.getElementById('urlForm');
     const errorMsg = document.getElementById('errorMsg');
     form.addEventListener('submit', async (e) => {
@@ -35,14 +35,13 @@
         errorMsg.style.display = 'block';
         return;
       }
-      // Send to main process
-      window.postMessage({ type: 'set-music-assistant-url', url });
+      // Send to main process via IPC
+      window.postMessage({ type: 'set-music-assistant-url', url }, '*');
     });
-    // Listen for redirect
-    window.addEventListener('message', (event) => {
-      if (event.data && event.data.type === 'redirect' && event.data.url) {
-        window.location = event.data.url;
-      }
+    // Listen for redirect from main process
+    const { ipcRenderer } = require('electron');
+    ipcRenderer.on('redirect', (event, url) => {
+      window.location = url;
     });
   </script>
 </body>
