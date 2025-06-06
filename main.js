@@ -43,11 +43,8 @@ async function createWindow() {
   if (!url) {
     url = process.env.MUSIC_ASSISTANT_URL;
     if (!url) {
-      // Use absolute path for packaged app
-      const firstRunPath = app.isPackaged
-        ? path.join(process.resourcesPath, 'app', 'first-run.html')
-        : path.join(__dirname, 'first-run.html');
-      win.loadFile(firstRunPath);
+      // Use relative path, works in dev and packaged
+      win.loadFile('first-run.html');
       // Listen for URL from renderer
       ipcMain.once('set-music-assistant-url', (event, userUrl) => {
         if (userUrl && /^https?:\/\//.test(userUrl)) {
