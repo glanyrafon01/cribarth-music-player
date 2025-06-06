@@ -47,7 +47,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Publish .deb to GitHub Release
-        if: startsWith(github.ref, 'refs/tags/v')
+        if: startsWith(github.ref, 'refs/tags/')
         run: npx electron-builder --linux deb --publish always --config.extraMetadata.version=$VERSION
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
@@ -80,7 +80,7 @@ jobs:
           path: dist/*.exe
 
       - name: Publish .exe to GitHub Release
-        if: startsWith(github.ref, 'refs/tags/v')
+        if: startsWith(github.ref, 'refs/tags/)
         run: npx electron-builder --win --publish always --config.extraMetadata.version=$env:VERSION
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
