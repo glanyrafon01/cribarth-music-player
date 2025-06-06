@@ -3,7 +3,7 @@ name: Build and Publish Release
 on:
   push:
     tags:
-      - 'v*.*.*'  # Trigger on version tags like v1.0.9
+      - '*.*.*'  # Trigger on version tags like 1.0.9
     branches:
       - 'feature/**'  # Also trigger on feature branches
 
