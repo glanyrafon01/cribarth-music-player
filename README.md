@@ -35,6 +35,10 @@ npm install
 npm start
 ```
 
+## Audit
+
+See [AUDIT.md](AUDIT.md) for a static review of the current codebase, risks, and recommendations.
+
 ## Packaging
 
 See [docs/BUILD.md](docs/BUILD.md) for full details.
