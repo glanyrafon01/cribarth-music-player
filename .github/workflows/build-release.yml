@@ -101,6 +101,11 @@ jobs:
           git commit --allow-empty -m "Initial gh-pages commit"
           git push origin gh-pages
 
+      - name: Fetch setup-repo.sh from source
+        run: |
+          git fetch origin ${{ github.sha }}
+          git checkout FETCH_HEAD -- setup-repo.sh
+
       - name: Download .deb artifact
         uses: actions/download-artifact@v4
         with:
