@@ -1,31 +1,39 @@
 # Cribarth Music Player
 
-A lightweight Electron wrapper for Home Assistant's [Music Assistant](https://music-assistant.github.io) "This Device" player.
+A lightweight Electron wrapper for [Music Assistant](https://music-assistant.github.io) "This Device" player.
 
 ## Features
 
-- Persistent, non-browser playback target
-- Uses your Home Assistant instance as the source
-- Integrates cleanly with Music Assistant player selection
-- Launchable from system menu with custom icon
-- Distributed as a `.deb` package for easy manual install
+- **Bilingual UI**: Fully supports English and Welsh (Cymraeg).
+- **Direct Connection**: Connects directly to Music Assistant on port 8095.
+- **Persistent Playback**: Non-browser playback target that integrates cleanly with Music Assistant.
+- **Easy Configuration**: Change your server IP at any time via the application menu.
+- **APT Repository**: Automatic updates on Linux via our hosted repository.
 
 ## Installation
 
-See [docs/INSTALLING.md](docs/INSTALLING.md) for full instructions.
+### Recommended: APT Repository (Linux)
 
-### Quick Install
-
-Download the latest `.deb` release from the [Releases](https://github.com/glanyrafon01/cribarth-music-player/releases) page:
+To enable automatic updates, add our repository to your system:
 
 ```bash
-sudo apt install ./cribarth-music-player_1.0.X_amd64.deb
+curl -sL https://glanyrafon01.github.io/cribarth-music-player/setup-repo.sh | sudo bash
 ```
 
-Then launch from your app menu or run:
+Then install the player:
 
 ```bash
-cribarth-music-player
+sudo apt update
+sudo apt install cribarth-music-player
+```
+
+### Manual Installation
+
+Download the latest `.deb` or `.exe` release from the [Releases](https://github.com/glanyrafon01/cribarth-music-player/releases) page.
+
+For Linux manual installation:
+```bash
+sudo apt install ./cribarth-music-player_1.2.1_amd64.deb
 ```
 
 ## Development
@@ -35,21 +43,12 @@ npm install
 npm start
 ```
 
-## Audit
+## Documentation
 
-See [AUDIT.md](AUDIT.md) for a static review of the current codebase, risks, and recommendations.
-
-## Packaging
-
-See [docs/BUILD.md](docs/BUILD.md) for full details.
-
-```bash
-npm run package
-```
-
-## Releasing
-
-See [docs/RELEASING.md](docs/RELEASING.md) for the versioning and tagging workflow.
+- [Installing Guide](docs/INSTALLING.md)
+- [First Run Setup](docs/FIRST_RUN.md)
+- [How It Works](docs/HOW_IT_WORKS.md)
+- [Audit Report](AUDIT.md)
 
 ## 📦 Releases
 

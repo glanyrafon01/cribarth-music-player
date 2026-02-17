@@ -1,5 +1,19 @@
 # Cribarth Music Player – Release Notes
 
+## v1.2.1 – Bilingual Support & APT Repository
+
+### ✨ Features
+- **Bilingual Interface**: Seamlessly switch between English and Welsh (Cymraeg) in the settings.
+- **Server Settings Menu**: Added an application menu to change the Music Assistant server IP without re-running the installer.
+- **APT Repository Integration**: Hosted repository on GitHub Pages for automatic updates via `apt`.
+- **Direct Port 8095 Connection**: Optimized for direct Music Assistant server connections.
+
+### 🔧 Improvements
+- Secure IPC communication using `contextBridge`.
+- Improved build pipeline with automatic APT index generation.
+
+---
+
 ## v1.0.10 – Unified Cross-Platform Build
 
 ### ✨ Features

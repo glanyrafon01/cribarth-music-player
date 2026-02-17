@@ -4,6 +4,23 @@ This document explains how to install the Cribarth Music Player on your own syst
 
 ---
 
+## Recommended: APT Repository Installation
+
+For automatic updates, add our repository to your system:
+
+1. **Add the repository and update**
+```bash
+curl -sL https://glanyrafon01.github.io/cribarth-music-player/setup-repo.sh | sudo bash
+```
+
+2. **Install the player**
+```bash
+sudo apt update
+sudo apt install cribarth-music-player
+```
+
+---
+
 ## Manual Installation
 
 1. **Download the latest `.deb` file**

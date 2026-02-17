@@ -1,3 +1,6 @@
-## Unreleased ##
+## [1.2.1] - 2026-02-17
 ### Added
-- [Feature] Allow users to configure Music Assistant IP on first run instead of using a hardcoded value ([#X](https://github.com/glanyrafon01/cribarth-music-player/issues/X))
+- Bilingual support for Welsh and English.
+- Application Menu with Settings/Change Server option.
+- Direct connection to Music Assistant on port 8095.
+- APT repository support for automatic updates.

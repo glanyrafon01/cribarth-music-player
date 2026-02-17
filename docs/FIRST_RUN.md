@@ -1,16 +1,23 @@
 # First Run Setup
 
-When you open the app for the first time, it asks for the web address of your Music Assistant instance.
+# First Run Setup
 
-## Finding your Music Assistant address
+When you open the app for the first time, you will see a settings screen.
 
-Use the same address you would type into a web browser to open Music Assistant, for example:
+## 1. Select Language
+Choose between **English** or **Cymraeg** using the toggle at the top right.
 
-- `http://192.168.1.100:8123/d5369777_music_assistant/ingress`
+## 2. Enter Server IP
+Enter the IP address of your Music Assistant server.
+- Example: `192.168.1.100`
 
-## Entering the address
+> [!TIP]
+> You only need the IP address. The app automatically connects to port **8095**.
 
-1) Paste or type the address into the field.
-2) Select "Save and Continue".
+## 3. Save and Connect
+Click **Save and Connect** (or **Cadw a Chysylltu**). The app will remember your settings.
 
-The app will remember this address for next time.
+---
+
+## Changing Settings Later
+You can return to this screen at any time by going to **File > Settings** in the application menu bar.
