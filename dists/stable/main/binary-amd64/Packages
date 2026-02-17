@@ -1,0 +1,20 @@
+Package: cribarth-music-player
+Version: 1.2.1
+Architecture: amd64
+Maintainer: Justin Horrell <justindhorrell@cribarth.cymru>
+Installed-Size: 258148
+Depends: libgtk-3-0, libnotify4, libnss3, libxss1, libxtst6, xdg-utils, libatspi2.0-0, libuuid1, libsecret-1-0
+Recommends: libappindicator3-1
+Filename: pool/main/cribarth-music-player_1.2.1_amd64.deb
+Size: 73131916
+MD5sum: 0227ef12e28a251c5629b0b586ec43f0
+SHA1: 0d5ec325d8813d96cde099a76a48b639cff9ad8a
+SHA256: 6bfa99398cbdd404bb26f1a2ef2ae540fd1920eb189ca291e4c98af430c561f5
+Section: default
+Priority: optional
+Homepage: https://github.com/glanyrafon01/cribarth-music-player
+Description:
+  Electron wrapper for Music Assistant’s ‘This Device’ player.
+License: MIT
+Vendor: Justin Horrell <justindhorrell@cribarth.cymru>
+
