@@ -119,6 +119,7 @@ jobs:
       - name: Generate Packages
         run: |
           mkdir -p dists/stable/main/binary-amd64
+          mkdir -p dists/stable/main/binary-i386 # Silence apt warnings
           
           # Scan packages. Using /dev/null as override file (standard)
           # dpkg-scanpackages should be run from the repo root
@@ -128,33 +129,45 @@ jobs:
           head -n 20 dists/stable/main/binary-amd64/Packages
           echo "------------------------------------------------"
           
+          # Create empty Packages for i386 to stop warnings
+          touch dists/stable/main/binary-i386/Packages
+          
+          # Compress
           gzip -k -f dists/stable/main/binary-amd64/Packages
+          gzip -k -f dists/stable/main/binary-i386/Packages
           
           # Generate Release file
           cd dists/stable
+          
+          # Helper function for hashes
+          generate_hashes() {
+            local alg=$1
+            local cmd=$2
+            echo "${alg}:"
+            find main -type f | while read file; do
+              local hash=$($cmd "$file" | cut -d' ' -f1)
+              local size=$(stat -c%s "$file")
+              echo " $hash $size $file"
+            done
+          }
+
           {
             echo "Origin: Cribarth Music Player"
             echo "Label: Cribarth Music Player"
             echo "Suite: stable"
             echo "Codename: stable"
-            echo "Architectures: amd64"
+            echo "Date: $(date -R)"
+            echo "Architectures: amd64 i386"
             echo "Components: main"
             echo "Description: Repository for Cribarth Music Player"
-            echo "Date: $(date -R)"
+            generate_hashes MD5Sum md5sum
+            generate_hashes SHA1 sha1sum
+            generate_hashes SHA256 sha256sum
           } > Release
           
-          # Add Hashes (Relative to dists/stable)
-          echo "MD5Sum:" >> Release
-          find main -type f -exec md5sum {} + | sed 's|  | |' | while read hash file; do
-             size=$(stat -c%s "$file")
-             echo " $hash $size $file" >> Release
-          done
-          
-          echo "SHA256:" >> Release
-          find main -type f -exec sha256sum {} + | sed 's|  | |' | while read hash file; do
-             size=$(stat -c%s "$file")
-             echo " $hash $size $file" >> Release
-          done
+          echo "--- DEBUG: Release Content ---"
+          cat Release
+          echo "------------------------------"
           cd ../..
 
       - name: Verify Directory Structure
