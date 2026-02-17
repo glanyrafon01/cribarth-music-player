@@ -1,6 +1,6 @@
 {
   "name": "cribarth-music-player",
-  "version": "1.1.8",
+  "version": "1.2.0",
   "description": "Electron wrapper for Music Assistant's 'This Device' player.",
   "main": "main.js",
   "scripts": {
@@ -26,10 +26,12 @@
       "main.js",
       "preload.js",
       "package.json",
-      "first-run.html"
+      "settings.html"
     ],
     "linux": {
-      "target": ["deb"],
+      "target": [
+        "deb"
+      ],
       "category": "AudioVideo",
       "executableName": "cribarth-music-player",
       "icon": "build/icons",
@@ -43,7 +45,9 @@
       }
     },
     "win": {
-      "target": ["nsis"],
+      "target": [
+        "nsis"
+      ],
       "icon": "build/icons/icon.ico"
     },
     "publish": {

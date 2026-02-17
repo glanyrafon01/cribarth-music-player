@@ -1,36 +1,104 @@
-const { app, BrowserWindow, dialog, ipcMain } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain, shell } = require('electron');
 const path = require('path');
 const fs = require('fs');
 
 const CONFIG_PATH = path.join(app.getPath('userData'), 'config.json');
 
-function getMusicAssistantUrl() {
+// Store reference to the main window
+let mainWindow = null;
+let currentConfig = {
+  serverIp: null,
+  musicAssistantUrl: null,
+  language: 'en'
+};
+
+function loadConfig() {
   if (fs.existsSync(CONFIG_PATH)) {
     try {
-      const config = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf-8'));
-      if (config.musicAssistantUrl) return config.musicAssistantUrl;
-    } catch (e) {}
+      const data = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf-8'));
+      currentConfig = { ...currentConfig, ...data };
+      return true;
+    } catch (e) {
+      console.error('Error reading config:', e);
+    }
   }
-  return null;
+  return false;
 }
 
-async function promptForMusicAssistantUrl(win) {
-  const { response, checkboxChecked } = await dialog.showMessageBox(win, {
-    type: 'info',
-    buttons: ['OK'],
-    title: 'Music Assistant URL Required',
-    message: 'Please enter the URL of your Music Assistant instance (e.g. http://192.168.1.100:8123/d5369777_music_assistant/ingress):',
-    detail: '',
-    input: true // Not natively supported, will fallback to prompt in renderer if needed
-  });
-  // Electron's dialog does not support input natively; fallback to prompt in renderer if needed
-  return null;
+function saveConfig(config) {
+  try {
+    fs.writeFileSync(CONFIG_PATH, JSON.stringify(config, null, 2));
+    currentConfig = config;
+    return true;
+  } catch (e) {
+    console.error('Error saving config:', e);
+    return false;
+  }
+}
+
+function connectToMusicAssistant() {
+  if (mainWindow && currentConfig.musicAssistantUrl) {
+    mainWindow.loadURL(currentConfig.musicAssistantUrl).catch(err => {
+      console.error('Failed to load Music Assistant URL:', err);
+      showSettings();
+    });
+  } else {
+    showSettings();
+  }
+}
+
+function showSettings() {
+  if (mainWindow) {
+    mainWindow.loadFile('settings.html');
+  }
+}
+
+function createMenu() {
+  const isCy = currentConfig.language === 'cy';
+
+  const template = [
+    {
+      label: isCy ? 'Ffeil' : 'File',
+      submenu: [
+        {
+          label: isCy ? 'Gosodiadau / Newid Gweinydd' : 'Settings / Change Server',
+          click: () => showSettings()
+        },
+        { type: 'separator' },
+        { role: 'quit', label: isCy ? 'Gadael' : 'Quit' }
+      ]
+    },
+    {
+      label: isCy ? 'Golwg' : 'View',
+      submenu: [
+        { role: 'reload', label: isCy ? 'Ail-lwytho' : 'Reload' },
+        { role: 'forceReload', label: isCy ? 'Gorfodi Ail-lwytho' : 'Force Reload' },
+        { role: 'toggleDevTools', label: isCy ? 'Offer Datblygu' : 'Toggle Developer Tools' },
+        { type: 'separator' },
+        { role: 'togglefullscreen', label: isCy ? 'Sgrin Lawn' : 'Toggle Full Screen' }
+      ]
+    },
+    {
+      label: 'Help',
+      submenu: [
+        {
+          label: isCy ? 'Amdanom ni' : 'About',
+          click: async () => {
+            await shell.openExternal('https://github.com/glanyrafon01/cribarth-music-player');
+          }
+        }
+      ]
+    }
+  ];
+
+  const menu = Menu.buildFromTemplate(template);
+  Menu.setApplicationMenu(menu);
 }
 
 async function createWindow() {
-  const win = new BrowserWindow({
-    width: 1000,
-    height: 700,
+  mainWindow = new BrowserWindow({
+    width: 1024,
+    height: 768,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: false,
@@ -39,24 +107,25 @@ async function createWindow() {
     title: 'Cribarth Music Player',
   });
 
-  let url = getMusicAssistantUrl();
-  if (!url) {
-    url = process.env.MUSIC_ASSISTANT_URL;
-    if (!url) {
-      // Use relative path, works in dev and packaged
-      win.loadFile('first-run.html');
-      // Listen for URL from renderer
-      ipcMain.once('set-music-assistant-url', (event, userUrl) => {
-        if (userUrl && /^https?:\/\//.test(userUrl)) {
-          fs.writeFileSync(CONFIG_PATH, JSON.stringify({ musicAssistantUrl: userUrl }));
-          win.webContents.send('redirect', userUrl);
-        }
-      });
-      return;
-    }
-    fs.writeFileSync(CONFIG_PATH, JSON.stringify({ musicAssistantUrl: url }));
+  loadConfig();
+  createMenu();
+
+  if (currentConfig.musicAssistantUrl) {
+    connectToMusicAssistant();
+  } else {
+    showSettings();
   }
-  win.loadURL(url);
+
+  // Handle IPC from settings.html
+  ipcMain.on('save-settings', (event, data) => {
+    saveConfig(data);
+    createMenu(); // Rebuild menu to update language if changed
+    connectToMusicAssistant();
+  });
+
+  ipcMain.on('request-settings', (event) => {
+    event.reply('load-settings', currentConfig);
+  });
 }
 
 app.whenReady().then(() => {
