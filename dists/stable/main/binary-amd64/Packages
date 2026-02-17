@@ -6,10 +6,10 @@ Installed-Size: 258148
 Depends: libgtk-3-0, libnotify4, libnss3, libxss1, libxtst6, xdg-utils, libatspi2.0-0, libuuid1, libsecret-1-0
 Recommends: libappindicator3-1
 Filename: pool/main/cribarth-music-player_1.2.1_amd64.deb
-Size: 73110768
-MD5sum: cb6eb0f7eae308690f627f54ce00288a
-SHA1: 8e57e8fc1778783f2f74c202379f80e54e744947
-SHA256: 233d3d15412259a534334f7f2ffdaa0296602220de9bc44bcdabc84a955cbb51
+Size: 73134936
+MD5sum: c1621be4697bb59ff8ffb32f6cb80fd5
+SHA1: 812452f3e6015520771bf86a34d5ace9b80fe5e4
+SHA256: 9deb8d0cdd49ffc8a01cec0a795ed07855c2393ed2d91cf6fcbfd5888afd5a2a
 Section: default
 Priority: optional
 Homepage: https://github.com/glanyrafon01/cribarth-music-player
