@@ -5,10 +5,10 @@ Codename: stable
 Architectures: amd64
 Components: main
 Description: Repository for Cribarth Music Player
-Date: Tue, 17 Feb 2026 12:52:21 +0000
+Date: Tue, 17 Feb 2026 13:10:37 +0000
 MD5Sum:
- 6509670552bce0bd310cf81dcff03539 521 ./main/binary-amd64/Packages.gz
- 8be299e46aa2abcc18eb35adaa9ad440 775 ./main/binary-amd64/Packages
+ a8b57cc2813627bd1e15c64749e9309d 523 ./main/binary-amd64/Packages.gz
+ 01a2850139b421ea8f4982d91aece4dc 775 ./main/binary-amd64/Packages
 SHA256:
- fa3e7089c29771a27d89f1612db48feb20f4d8395e9ccfdb14e636ebd4d0da6a 521 ./main/binary-amd64/Packages.gz
- c7e7f90bb63d5874fecbbae86bce2907a6e68cfca9415958d22e4a5e9ed37c41 775 ./main/binary-amd64/Packages
+ cddc904123aca05f7c3c3230f8eadb175ed9f5ed1fd63efd88e05061a81d0199 523 ./main/binary-amd64/Packages.gz
+ 29eb881bfb6b2fc3faeacaf84b7f9137eed8dc326dcf4f2ec978d682f670f9fd 775 ./main/binary-amd64/Packages
