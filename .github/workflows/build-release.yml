@@ -76,3 +76,84 @@ jobs:
         run: npx electron-builder --win --publish always --config.extraMetadata.version=$env:VERSION
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  deploy-apt-repo:
+    name: Deploy to APT Repository
+    needs: build-linux
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    steps:
+      - name: Checkout gh-pages
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          fetch-depth: 0
+
+      - name: Create gh-pages if not exists
+        if: failure()
+        run: |
+          git checkout --orphan gh-pages
+          git reset --hard
+          git commit --allow-empty -m "Initial gh-pages commit"
+          git push origin gh-pages
+
+      - name: Download .deb artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: cribarth-music-player-linux-deb
+          path: pool/main/
+
+      - name: Install dpkg-dev
+        run: sudo apt-get update && sudo apt-get install -y dpkg-dev
+
+      - name: Generate Packages
+        run: |
+          mkdir -p dists/stable/main/binary-amd64
+          # Move .deb to pool structure if not already correct or just scan from root/pool
+          # Simpler structure: flat repo or proper structure. Let's do a simple flat-ish repo or standard.
+          # Standard:
+          # repo/
+          #   dists/
+          #     stable/
+          #       main/
+          #         binary-amd64/
+          #           Packages
+          #           Packages.gz
+          #           Release
+          #   pool/
+          #     main/
+          #       *.deb
+          
+          # dpkg-scanpackages needs to run from the root of the repo
+          dpkg-scanpackages --multiversion pool/main > dists/stable/main/binary-amd64/Packages
+          gzip -k -f dists/stable/main/binary-amd64/Packages
+          
+          # Generate Release file
+          cd dists/stable
+          echo "Origin: Cribarth Music Player" > Release
+          echo "Label: Cribarth Music Player" >> Release
+          echo "Suite: stable" >> Release
+          echo "Codename: stable" >> Release
+          echo "Architectures: amd64" >> Release
+          echo "Components: main" >> Release
+          echo "Description: Repository for Cribarth Music Player" >> Release
+          
+          # Release file hashes? GitHub Pages hosting is simple, apt handles flat repos or dists.
+          # For a signed valid Release file we need hashes.
+          # Simple valid Release generation:
+          echo "Date: $(date -R)" >> Release
+          echo "MD5Sum:" >> Release
+          find . -type f ! -name "Release" -printf " %32@ %s %p\n" | while read time size file; do
+             echo " $(md5sum "$file" | cut -d" " -f1) $size $file" >> Release
+          done
+          echo "SHA256:" >> Release
+           find . -type f ! -name "Release" -printf " %32@ %s %p\n" | while read time size file; do
+             echo " $(sha256sum "$file" | cut -d" " -f1) $size $file" >> Release
+          done
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .
+          keep_files: true # Keep old versions in pool

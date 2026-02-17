@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Cribarth Music Player - Settings / Gosodiadau</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f8f8f8;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: #fff;
+      padding: 2em;
+      border-radius: 8px;
+      box-shadow: 0 2px 12px #0001;
+      max-width: 400px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    h2 {
+      margin-top: 0;
+      text-align: center;
+      color: #333;
+    }
+
+    .form-group {
+      margin-bottom: 1em;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5em;
+      font-weight: bold;
+      color: #555;
+    }
+
+    input[type="text"],
+    select {
+      width: 100%;
+      padding: 0.6em;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+      font-size: 1rem;
+    }
+
+    button {
+      width: 100%;
+      padding: 0.7em;
+      border: none;
+      background: #0078d7;
+      color: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background: #0063b1;
+    }
+
+    .error {
+      color: #d00;
+      margin-bottom: 1em;
+      font-size: 0.9em;
+      text-align: center;
+    }
+
+    .lang-switch {
+      margin-bottom: 1.5em;
+      text-align: right;
+    }
+
+    .lang-switch a {
+      cursor: pointer;
+      color: #0078d7;
+      text-decoration: none;
+      margin-left: 10px;
+      font-size: 0.9em;
+    }
+
+    .lang-switch a.active {
+      font-weight: bold;
+      color: #333;
+      cursor: default;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="lang-switch">
+      <a id="lang-en" onclick="setLanguage('en')">English</a> | <a id="lang-cy" onclick="setLanguage('cy')">Cymraeg</a>
+    </div>
+    <h2 id="title">Settings</h2>
+    <form id="settingsForm">
+      <div class="form-group">
+        <label for="serverIp" id="lbl-serverIp">Server IP Address:</label>
+        <input type="text" id="serverIp" name="serverIp" placeholder="192.168.1.x" required>
+      </div>
+      <div class="error" id="errorMsg" style="display:none"></div>
+      <button type="submit" id="btn-save">Save and Connect</button>
+    </form>
+  </div>
+  <script>
+    const translations = {
+      en: {
+        title: "Settings",
+        lblServerIp: "Music Assistant Server IP:",
+        placeholderIp: "e.g. 192.168.1.50",
+        btnSave: "Save and Connect",
+        errorInvalidIp: "Please enter a valid IP address.",
+        windowTitle: "Cribarth Music Player - Settings"
+      },
+      cy: {
+        title: "Gosodiadau",
+        lblServerIp: "Cyfeiriad IP Gweinydd Music Assistant:",
+        placeholderIp: "e.e. 192.168.1.50",
+        btnSave: "Cadw a Chysylltu",
+        errorInvalidIp: "Rhowch gyfeiriad IP dilys os gwelwch yn dda.",
+        windowTitle: "Cribarth Music Player - Gosodiadau"
+      }
+    };
+
+    let currentLang = 'en';
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      const t = translations[lang];
+      document.getElementById('title').textContent = t.title;
+      document.getElementById('lbl-serverIp').textContent = t.lblServerIp;
+      document.getElementById('serverIp').placeholder = t.placeholderIp;
+      document.getElementById('btn-save').textContent = t.btnSave;
+      document.title = t.windowTitle;
+
+      document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+      document.getElementById('lang-cy').classList.toggle('active', lang === 'cy');
+
+      // Clear error message when switching language
+      document.getElementById('errorMsg').style.display = 'none';
+    }
+
+    // Initialize
+    setLanguage('en');
+
+    // Handle Form Submission
+    const form = document.getElementById('settingsForm');
+    const errorMsg = document.getElementById('errorMsg');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const ip = document.getElementById('serverIp').value.trim();
+
+      // Basic IP validation (IPv4)
+      const ipRegex = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+      // Allow localhost as well
+      const isLocal = ip === 'localhost';
+
+      if (!ipRegex.test(ip) && !isLocal) {
+        errorMsg.textContent = translations[currentLang].errorInvalidIp;
+        errorMsg.style.display = 'block';
+        return;
+      }
+
+      // Construct URL
+      const url = `http://${ip}:8095`;
+
+      // Send to main process
+      window.api.saveSettings({
+        serverIp: ip,
+        musicAssistantUrl: url,
+        language: currentLang
+      });
+    });
+
+    // Receive current config if available to populate fields
+    window.api.onLoadSettings((config) => {
+      if (config.serverIp) {
+        document.getElementById('serverIp').value = config.serverIp;
+      }
+      if (config.language && translations[config.language]) {
+        setLanguage(config.language);
+      }
+    });
+
+    // Request settings on load
+    window.api.requestSettings();
+
+  </script>
+</body>
+
+</html>
