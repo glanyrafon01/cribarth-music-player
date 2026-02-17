@@ -84,13 +84,15 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/')
     steps:
       - name: Checkout gh-pages
+        id: checkout
         uses: actions/checkout@v4
         with:
           ref: gh-pages
           fetch-depth: 0
+        continue-on-error: true
 
       - name: Create gh-pages if not exists
-        if: failure()
+        if: steps.checkout.outcome == 'failure'
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
