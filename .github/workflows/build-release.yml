@@ -120,41 +120,44 @@ jobs:
         run: |
           mkdir -p dists/stable/main/binary-amd64
           
-          # Scan packages
-          # ensure pool/main exists and has files
-          if [ ! -d "pool/main" ]; then
-            echo "Error: pool/main does not exist!"
-            ls -R
-            exit 1
-          fi
+          # Scan packages. Using /dev/null as override file (standard)
+          # dpkg-scanpackages should be run from the repo root
+          dpkg-scanpackages --multiversion pool/main /dev/null > dists/stable/main/binary-amd64/Packages
           
-          dpkg-scanpackages --multiversion pool/main > dists/stable/main/binary-amd64/Packages
-          cat dists/stable/main/binary-amd64/Packages # Debug output
+          echo "--- DEBUG: Packages Content (first 20 lines) ---"
+          head -n 20 dists/stable/main/binary-amd64/Packages
+          echo "------------------------------------------------"
+          
           gzip -k -f dists/stable/main/binary-amd64/Packages
           
           # Generate Release file
           cd dists/stable
-          echo "Origin: Cribarth Music Player" > Release
-          echo "Label: Cribarth Music Player" >> Release
-          echo "Suite: stable" >> Release
-          echo "Codename: stable" >> Release
-          echo "Architectures: amd64" >> Release
-          echo "Components: main" >> Release
-          echo "Description: Repository for Cribarth Music Player" >> Release
-          echo "Date: $(date -R)" >> Release
+          {
+            echo "Origin: Cribarth Music Player"
+            echo "Label: Cribarth Music Player"
+            echo "Suite: stable"
+            echo "Codename: stable"
+            echo "Architectures: amd64"
+            echo "Components: main"
+            echo "Description: Repository for Cribarth Music Player"
+            echo "Date: $(date -R)"
+          } > Release
           
+          # Add Hashes (Relative to dists/stable)
           echo "MD5Sum:" >> Release
-          find . -type f ! -name "Release" -exec md5sum {} + | sed 's| \./| |' | while read hash file; do
+          find main -type f -exec md5sum {} + | sed 's|  | |' | while read hash file; do
              size=$(stat -c%s "$file")
              echo " $hash $size $file" >> Release
           done
           
           echo "SHA256:" >> Release
-          find . -type f ! -name "Release" -exec sha256sum {} + | sed 's| \./| |' | while read hash file; do
+          find main -type f -exec sha256sum {} + | sed 's|  | |' | while read hash file; do
              size=$(stat -c%s "$file")
              echo " $hash $size $file" >> Release
           done
           cd ../..
 
       - name: Verify Directory Structure
-        run: ls -R
+        run: |
+          echo "--- Final Directory Structure ---"
+          ls -R
