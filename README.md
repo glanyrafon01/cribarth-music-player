@@ -48,11 +48,48 @@ npm start
 - [Installing Guide](docs/INSTALLING.md)
 - [First Run Setup](docs/FIRST_RUN.md)
 - [How It Works](docs/HOW_IT_WORKS.md)
+- [Android Development Guide](ANDROID_GUIDE.md)
 - [Audit Report](AUDIT.md)
 
 ## 📦 Releases
 
 See [RELEASE.md](./RELEASE.md) for the changelog and version history.
+
+## 📱 Android App
+
+A native Android implementation is available in the `android-app` directory. This provides the same functionality as the desktop version but optimized for mobile devices.
+
+### Android App Features
+
+- **Native Kotlin implementation** for better performance
+- **Bilingual UI** with English and Welsh support
+- **WebView integration** to display Music Assistant
+- **Configuration persistence** using Android SharedPreferences
+- **Responsive design** for various screen sizes
+
+### Getting Started with Android Development
+
+See [ANDROID_GUIDE.md](ANDROID_GUIDE.md) for comprehensive instructions on:
+- Setting up the Android project
+- Building and running the app
+- Testing and debugging
+- Deploying to Google Play
+
+### Android Project Structure
+
+```
+android-app/
+├── build.gradle          # Root build configuration
+├── settings.gradle       # Project settings
+├── app/
+│   ├── src/
+│   │   ├── main/
+│   │   │   ├── AndroidManifest.xml  # App manifest
+│   │   │   ├── java/                # Kotlin source code
+│   │   │   └── res/                 # Resources (layouts, strings, etc.)
+│   └── build.gradle       # App build configuration
+└── README.md             # Android-specific documentation
+```
 
 ## License
 

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Cribarth Music Player</string>
+    
+    <!-- English strings -->
+    <string name="title_settings">Settings</string>
+    <string name="title_player">Music Assistant</string>
+    <string name="server_ip_label">Music Assistant Server IP:</string>
+    <string name="server_ip_hint">e.g. 192.168.1.50</string>
+    <string name="save_connect">Save and Connect</string>
+    <string name="invalid_ip_error">Please enter a valid IP address.</string>
+    <string name="menu_settings">Settings / Change Server</string>
+    <string name="menu_about">About</string>
+    <string name="menu_quit">Quit</string>
+    <string name="menu_reload">Reload</string>
+    <string name="menu_dev_tools">Toggle Developer Tools</string>
+    <string name="menu_fullscreen">Toggle Full Screen</string>
+    
+    <!-- Welsh strings -->
+    <string name="title_settings_cy">Gosodiadau</string>
+    <string name="title_player_cy">Music Assistant</string>
+    <string name="server_ip_label_cy">Cyfeiriad IP Gweinydd Music Assistant:</string>
+    <string name="server_ip_hint_cy">e.e. 192.168.1.50</string>
+    <string name="save_connect_cy">Cadw a Chysylltu</string>
+    <string name="invalid_ip_error_cy">Rhowch gyfeiriad IP dilys os gwelwch yn dda.</string>
+    <string name="menu_settings_cy">Gosodiadau / Newid Gweinydd</string>
+    <string name="menu_about_cy">Amdanom ni</string>
+    <string name="menu_quit_cy">Gadael</string>
+    <string name="menu_reload_cy">Ail-lwytho</string>
+    <string name="menu_dev_tools_cy">Offer Datblygu</string>
+    <string name="menu_fullscreen_cy">Sgrin Lawn</string>
+    
+    <string name="language_english">English</string>
+    <string name="language_welsh">Cymraeg</string>
+</resources>
